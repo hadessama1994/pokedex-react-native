@@ -1,0 +1,12 @@
+{
+  "name": "pokedexmobile",
+  "displayName": "pokedexmobile",
+  "expo": {
+    "name": "pokedexmobile",
+    "slug": "pokedexmobile",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
