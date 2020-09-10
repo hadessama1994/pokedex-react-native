@@ -1,15 +1,43 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Button  } from 'react-native';
+import { Container, Text, Header, Content, List, ListItem, Left, Body, Right, Thumbnail} from 'native-base';
+import PokeApi from './api'
+import Pokemon from './Components/Pokemon'
 
 export default function App() {
+
+    const [pokemon, setPokemon] = useState([])
+
+    async function fetchPokes(){
+      const response = await PokeApi.pokemons()
+      setPokemon(response.data.results)
+    }
+
+    useEffect(()=>{
+      fetchPokes();
+    },[])
+    console.log(pokemon)
+    
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <>
+    <Container>
+         <Content>
+           <Header />
+           
+           {pokemon.map((todo, key)=>
+
+              <Pokemon name={todo.name} url={todo.url} />
+
+            )}
+          
+        </Content>
+      </Container>
+
+      </>
+  )
 }
+
 
 const styles = StyleSheet.create({
   container: {
