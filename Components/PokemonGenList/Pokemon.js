@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Button } from 'react-native';
-import { Container, Text, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Badge, Grid, Col, Row} from 'native-base';
+import { Container, Text, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Badge, Grid, Col, Spinner, H3} from 'native-base';
 import axios from 'react-native-axios'
 
 
@@ -16,6 +16,7 @@ const Pokemon = (props) => {
         useEffect(()=>{
 
            
+
             axios.get(props.url).then(function (res) {
                 setPokeSprite(res.data.sprites.front_default)
                 setPokeID(res.data.id)
@@ -33,9 +34,9 @@ const Pokemon = (props) => {
 
               colorChange()
 
-        },[pokeType, pokeType2])
+        },[pokeType])
 
-
+        
 
         function colorChange (){
             
@@ -83,10 +84,12 @@ const Pokemon = (props) => {
             
         }
 
-        
+
+       
 
         return (
         <>
+         
             <List>
             <ListItem thumbnail>
             <Left>
@@ -95,14 +98,20 @@ const Pokemon = (props) => {
            
             <Body> 
             <Grid >
-                     <Row >                    
-                    <Thumbnail square source={{ uri: `${pokeSprite}` }} />   
-                     <Text style={{paddingLeft: 2}}> {props.name.charAt(0).toUpperCase() + props.name.slice(1)}</Text>
-                    <Col ></Col>
-                 
-                 <Col style={{ alignItems:'center', maxWidth: 100}}><Badge style={{ backgroundColor: `${color1}`, marginBottom: 10 }}><Text>{pokeType.toUpperCase()}</Text></Badge>                 
-                 <Badge style={{ backgroundColor: `${color2}` }}><Text>{pokeType2.toUpperCase()}</Text></Badge></Col>
-                  </Row>
+               
+                      
+                     <Left style={{flex: 3.0}}>          
+                              
+                     <Thumbnail square source={{ uri: `${pokeSprite}` }} /> 
+                     
+                    <Col><H3 style={{alignSelf: 'center', paddingLeft: 10}}> {props.name.charAt(0).toUpperCase() + props.name.slice(1)}</H3></Col>
+                    </Left>   
+                    
+                   
+                    <Right style={{flex: 1.0}}>
+                 <Col style={{ justifyContent:'flex-end'}}><Badge style={{ backgroundColor: `${color1}` }}><Text>{pokeType.toUpperCase()}</Text></Badge>                 
+                 <Badge style={{ backgroundColor: `${color2}` }}><Text>{pokeType2.toUpperCase()}</Text></Badge></Col></Right>
+                  
                   </Grid>
                   
                   

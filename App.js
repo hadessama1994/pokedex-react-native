@@ -1,13 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Button  } from 'react-native';
-import { Container, Text, Header, Content, List, ListItem, Left, Body, Right, Thumbnail} from 'native-base';
+import { StyleSheet  } from 'react-native';
+import { Container, Text, Header, Content, Item, Icon, Input, Button, Footer, FooterTab, Spinner} from 'native-base';
 import PokeApi from './api'
-import Pokemon from './Components/Pokemon'
+import PokemonGen from './Components/PokemonGen/PokemonGen'
+import PokemonGen2 from './Components/PokemonGen/PokemonGen2'
+import PokemonGen3 from './Components/PokemonGen/PokemonGen3'
 
 export default function App() {
 
     const [pokemon, setPokemon] = useState([])
+    const [pokemonFind, setPokemonFind] = useState([])
+    const [selectedTab, setSelectedTab] = useState('1st')
 
     async function fetchPokes(){
       const response = await PokeApi.pokemons()
@@ -15,26 +19,92 @@ export default function App() {
     }
 
     useEffect(()=>{
+
       fetchPokes();
-    },[])
-    console.log(pokemon)
+      onChangeText();
+      
+      
+    },[selectedTab])
+
+    
+
+    
+   
+
+
+   function onChangeText(text){
+    
+    if (text == '' || text == ' ' || !text)
+    {
+      setPokemonFind(pokemon)
+     
+    }
+    else{
+    setPokemonFind(pokemon.filter(todo => todo.name.includes(text)))
+    }
+  
+    }
+
+    function renderSelectedTab () {
+      switch (selectedTab) {
+        case '1st':
+          return (<PokemonGen pokemonFind={pokemonFind}/>);
+          break;
+        case '2nd':
+          return (<PokemonGen2 pokemonFind={pokemonFind} />);
+          break;
+        case '3rd':
+          return (<PokemonGen3 pokemonFind={pokemonFind} />);
+          break;
+        default:
+      }
+    }
     
   return (
+   
     <>
-    <Container>
-         <Content>
-           <Header />
+      
+            
+         
+   
+         
+        <Header searchBar rounded>
+          <Item>
+            <Icon name="ios-search" />
+            <Input placeholder="Search" onChangeText={text => onChangeText(text.toLowerCase())} />
+            
+          </Item>
+          <Button transparent>
+            <Text>Search</Text>
+          </Button>
+        </Header>
+        
+
+      {renderSelectedTab()}
+      
+     
+      <Footer>
+          <FooterTab>
+            <Button active={selectedTab==='1st'} 
+               onPress={() => setSelectedTab('1st')} >
+                <Text>First Gen</Text>              
+            </Button>
            
-           {pokemon.map((todo, key)=>
+            <Button active={selectedTab==='2nd'} 
+               onPress={() => setSelectedTab('2nd')} >
+                <Text>Second Gen</Text>              
+            </Button>
 
-              <Pokemon name={todo.name} url={todo.url} />
+            <Button active={selectedTab==='3rd'} 
+               onPress={() => setSelectedTab('3rd')} >
+                <Text>Third Gen</Text>              
+            </Button>
 
-            )}
-          
-        </Content>
-      </Container>
-
+          </FooterTab>
+        </Footer>
+      
       </>
+      
   )
 }
 
