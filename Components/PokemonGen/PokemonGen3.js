@@ -16,9 +16,11 @@ export default function PokemonGen3(props) {
     }
 
     useEffect(()=>{
-
+       
+      
+        fetchPokes();
         pokemonLoad()  
-      fetchPokes();
+        
      
       
     },[])
@@ -28,9 +30,7 @@ export default function PokemonGen3(props) {
           
           return <Spinner color='blue' />
         }
-        else{
-          return
-        }
+        
       }
 
       
@@ -41,7 +41,7 @@ export default function PokemonGen3(props) {
          
           
          {pokemonLoad()}
-           {props.pokemonFind.map((todo)=>
+           {pokemon.map((todo)=>
 
               <Pokemon name={todo.name} url={todo.url} key={todo.url} />
 

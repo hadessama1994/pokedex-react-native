@@ -8,28 +8,49 @@ import Pokemon from '../PokemonGenList/Pokemon'
 export default function PokemonGen(props) {
 
     const [pokemon, setPokemon] = useState([])
-    const [pokemonFind, setPokemonFind] = useState([])
+
+    
 
     async function fetchPokes(){
       const response = await PokeApi.pokemons1gn()
       setPokemon(response.data.results)
     }
 
-    useEffect(()=>{
-        pokemonLoad()
-        fetchPokes();
-        
+    useEffect(()=>{          
+            fetchPokes()  
       
     },[])
+
+    useEffect(()=>{        
+        
+        pokemonSearch()       
+              
+    },[props.pokemonFind])
+
+    
+
+    
     
     function pokemonLoad(){
         if (pokemon.length < 100){
           console.log('load')
-          return (<Spinner color='blue' />)
+          return (<Spinner color='blue' />)}
+
+        if (!props.pokemonFind) {
+            fetchPokes()
         }
-        else{
-          console.log('ok')
-        }
+        
+        
+        
+      }
+
+      function pokemonSearch(){
+          
+          if (props.pokemonFind){
+              setPokemon(props.pokemonFind)             
+          }
+          
+          
       }
 
       
@@ -40,7 +61,8 @@ export default function PokemonGen(props) {
          
           
            {pokemonLoad()}
-           {props.pokemonFind.map((todo)=>
+           
+           {pokemon.map((todo)=>
 
               <Pokemon name={todo.name} url={todo.url} key={todo.url} />
 

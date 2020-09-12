@@ -24,6 +24,13 @@ export default function App() {
       onChangeText();
       
       
+    },[])
+
+    useEffect(()=>{
+
+      onChangeText();
+      
+      
     },[selectedTab])
 
     
@@ -36,7 +43,7 @@ export default function App() {
     
     if (text == '' || text == ' ' || !text)
     {
-      setPokemonFind(pokemon)
+      setPokemonFind('')
      
     }
     else{

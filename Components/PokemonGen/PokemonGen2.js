@@ -28,9 +28,7 @@ export default function PokemonGen2(props) {
           
           return <Spinner color='blue' />
         }
-        else{
-          return
-        }
+        
       }
 
       
