@@ -1,92 +1,61 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet  } from 'react-native';
-import { Container, Text, Header, Content, Item, Icon, Input, Button, Spinner} from 'native-base';
-import PokeApi from '../../api'
-import Pokemon from '../PokemonGenList/Pokemon'
+import { StyleSheet } from 'react-native';
+import {
+  Container, Text, Header, Content, Item, Icon, Input, Button, Spinner,
+} from 'native-base';
+import PokeApi from '../../api';
+import Pokemon from '../PokemonGenList/Pokemon';
 
- function PokemonGen3(props) {
+function PokemonGen3(props) {
+  const [pokemon, setPokemon] = useState([]);
 
-    const [pokemon, setPokemon] = useState([])
-    
+  async function fetchPokes() {
+    const response = await PokeApi.pokemons3gn();
+    setPokemon(response.data.results);
+  }
 
+  useEffect(() => {
+    fetchPokes();
+  }, []);
 
-    async function fetchPokes(){
-      const response = await PokeApi.pokemons3gn()
-      setPokemon(response.data.results)
-      
-      
+  function pokemonLoad() {
+    if (pokemon.length < 100) {
+      console.log('load');
+      return (<Spinner color="blue" />);
     }
+  }
 
-    useEffect(()=>{          
-            fetchPokes()  
-            
-      
-    },[])
+  if (!props.pokemonFindSearchBar) { // if search bar is empty
+    return (
 
-    
-    
-    function pokemonLoad(){
-        if (pokemon.length < 100){
-          console.log('load')
-          return (<Spinner color='blue' />)
-        }      
-           
-      }
+      <Container>
+        <Content>
 
+          {pokemonLoad()}
 
+          {pokemon.map((todo) => <Pokemon name={todo.name} url={todo.url} key={todo.url} />)}
 
-      if (!props.pokemonFindSearchBar) { //if search bar is empty
-        return (
-
-              
-            <Container>
-            <Content>
-            
-             
-              {pokemonLoad()}
-
-              
-              
-              {pokemon.map((todo)=>
-   
-                 <Pokemon name={todo.name} url={todo.url} key={todo.url} />
-   
-               )}
-             
-           </Content>
-         </Container>
-   
-              
-
-        )
-
-    }
-
-    
-  else{
-  return (
-    
-    <Container>
-         <Content>
-         
-          
-           {pokemonLoad()}
-           
-           {props.pokemonFindSearchBar.map((todo)=>
-
-              <Pokemon name={todo.name} url={todo.url} key={todo.url} />
-
-            )}
-          
         </Content>
       </Container>
 
-      
-  )
-           }
-}
+    );
+  }
 
+  return (
+
+    <Container>
+      <Content>
+
+        {pokemonLoad()}
+
+        {props.pokemonFindSearchBar.map((todo) => <Pokemon name={todo.name} url={todo.url} key={todo.url} />)}
+
+      </Content>
+    </Container>
+
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -97,5 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
-export default PokemonGen3
+export default PokemonGen3;
