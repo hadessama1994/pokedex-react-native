@@ -10,12 +10,13 @@ import PokemonGen3 from './Components/PokemonGen/PokemonGen3'
 export default function App() {
 
     const [pokemon, setPokemon] = useState([])
-    const [pokemonFind, setPokemonFind] = useState([])
+    const [pokemonFindSearchBar, setPokemonFindSearchBar] = useState([])
     const [selectedTab, setSelectedTab] = useState('1st')
 
     async function fetchPokes(){
       const response = await PokeApi.pokemons()
       setPokemon(response.data.results)
+      
     }
 
     useEffect(()=>{
@@ -34,20 +35,17 @@ export default function App() {
     },[selectedTab])
 
     
-
-    
-   
-
+     
 
    function onChangeText(text){
     
     if (text == '' || text == ' ' || !text)
     {
-      setPokemonFind('')
+      setPokemonFindSearchBar('')
      
     }
     else{
-    setPokemonFind(pokemon.filter(todo => todo.name.includes(text)))
+    setPokemonFindSearchBar(pokemon.filter(todo => todo.name.includes(text)))
     }
   
     }
@@ -55,13 +53,13 @@ export default function App() {
     function renderSelectedTab () {
       switch (selectedTab) {
         case '1st':
-          return (<PokemonGen pokemonFind={pokemonFind}/>);
+          return (<PokemonGen pokemonFindSearchBar={pokemonFindSearchBar}/>);
           break;
         case '2nd':
-          return (<PokemonGen2 pokemonFind={pokemonFind} />);
+          return (<PokemonGen2 pokemonFindSearchBar={pokemonFindSearchBar} />);
           break;
         case '3rd':
-          return (<PokemonGen3 pokemonFind={pokemonFind} />);
+          return (<PokemonGen3 pokemonFindSearchBar={pokemonFindSearchBar} />);
           break;
         default:
       }

@@ -5,64 +5,75 @@ import { Container, Text, Header, Content, Item, Icon, Input, Button, Spinner} f
 import PokeApi from '../../api'
 import Pokemon from '../PokemonGenList/Pokemon'
 
-export default function PokemonGen(props) {
+ function PokemonGen(props) {
 
     const [pokemon, setPokemon] = useState([])
-
     
+
 
     async function fetchPokes(){
       const response = await PokeApi.pokemons1gn()
       setPokemon(response.data.results)
+      
+      
     }
 
     useEffect(()=>{          
             fetchPokes()  
+            
       
     },[])
-
-    useEffect(()=>{        
-        
-        pokemonSearch()       
-              
-    },[props.pokemonFind])
-
-    
 
     
     
     function pokemonLoad(){
         if (pokemon.length < 100){
           console.log('load')
-          return (<Spinner color='blue' />)}
-
-        if (!props.pokemonFind) {
-            fetchPokes()
-        }
-        
-        
-        
+          return (<Spinner color='blue' />)
+        }      
+           
       }
 
-      function pokemonSearch(){
-          
-          if (props.pokemonFind){
-              setPokemon(props.pokemonFind)             
-          }
-          
-          
-      }
 
-      
+
+      if (!props.pokemonFindSearchBar) { //if search bar is empty
+        return (
+
+              
+            <Container>
+            <Content>
+            
+             
+              {pokemonLoad()}
+
+              
+              
+              {pokemon.map((todo)=>
+   
+                 <Pokemon name={todo.name} url={todo.url} key={todo.url} />
+   
+               )}
+             
+           </Content>
+         </Container>
+   
+              
+
+        )
+
+    }
+
+    
+  else{
   return (
-    <>
+    
     <Container>
          <Content>
          
           
            {pokemonLoad()}
            
-           {pokemon.map((todo)=>
+           {props.pokemonFindSearchBar.map((todo)=>
 
               <Pokemon name={todo.name} url={todo.url} key={todo.url} />
 
@@ -71,8 +82,9 @@ export default function PokemonGen(props) {
         </Content>
       </Container>
 
-      </>
+      
   )
+           }
 }
 
 
@@ -84,3 +96,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+export default PokemonGen

@@ -34,7 +34,7 @@ const Pokemon = (props) => {
 
               colorChange()
 
-        },[pokeType])
+        },[pokeType, pokeType2])
 
         
 
@@ -85,11 +85,16 @@ const Pokemon = (props) => {
         }
 
 
+       function loadData(){
+           if (!pokeSprite){
+               return (<Spinner color='red' />)
+           }
+       }
        
 
         return (
         <>
-         
+            
             <List>
             <ListItem thumbnail>
             <Left>
@@ -100,9 +105,11 @@ const Pokemon = (props) => {
             <Grid >
                
                       
-                     <Left style={{flex: 3.0}}>          
+                     <Left style={{flex: 3.0}}>       
+                     
                               
                      <Thumbnail square source={{ uri: `${pokeSprite}` }} /> 
+                     {loadData()}   
                      
                     <Col><H3 style={{alignSelf: 'center', paddingLeft: 10}}> {props.name.charAt(0).toUpperCase() + props.name.slice(1)}</H3></Col>
                     </Left>   
